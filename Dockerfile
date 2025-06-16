@@ -1,14 +1,23 @@
-FROM quay.io/go-skynet/local-ai:latest
+FROM debian:bullseye-slim
 
-# Limpiar modelos innecesarios que vienen por defecto
-RUN rm -rf /models/* && rm -rf /app/models/* && rm -rf /root/.cache/*
+# Instalar dependencias mínimas
+RUN apt-get update && apt-get install -y curl unzip && \
+    rm -rf /var/lib/apt/lists/*
 
-# Configuración básica
+# Crear carpeta para modelos
+RUN mkdir -p /models
+
+# Descargar el binario de LocalAI (solo binario, no modelos)
+RUN curl -L https://github.com/go-skynet/LocalAI/releases/latest/download/local-ai-linux-amd64 \
+    -o /usr/local/bin/local-ai && chmod +x /usr/local/bin/local-ai
+
+# Variables necesarias
 ENV MODELS_PATH=/models
 ENV THREADS=4
 ENV CONTEXT_SIZE=2048
-ENV N_GPU_LAYERS=0
-ENV DEBUG=false
 
-# Copiamos solo el modelo YAML que queremos
+# Agregamos configuración del modelo
 COPY mistral.yaml /models/
+
+# Ejecutar
+CMD ["/usr/local/bin/local-ai"]
