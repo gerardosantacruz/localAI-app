@@ -1,10 +1,8 @@
-FROM localai/localai:cpu
+FROM localai/localai:latest-aio-cpu
 
-# Evita que descargue modelos automáticamente
+ENV MODELS_PATH=/models
 ENV MODELS=none
 
-# Carpeta para tus modelos
-VOLUME ["/models"]
-WORKDIR /app
+COPY models/ /models/
 
 CMD ["local-ai", "--models-path", "/models"]
