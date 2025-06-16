@@ -1,0 +1,10 @@
+name: mistral
+backend: llama
+parameters:
+  model: Mistral-7B-Instruct-v0.3.Q4_K_M.gguf
+  temperature: 0.7
+  top_p: 0.95
+  threads: 4
+  n_predict: 200
+  stopwords:
+    - "</s>"
