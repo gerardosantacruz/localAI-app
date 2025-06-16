@@ -1,7 +1,10 @@
-FROM localai/localai:cpu-small
+FROM localai/localai:cpu
 
-ENV MODELS_PATH=/models
+# Evita que descargue modelos automáticamente
+ENV MODELS=none
 
-COPY models/ /models/
+# Carpeta para tus modelos
+VOLUME ["/models"]
+WORKDIR /app
 
-CMD ["/usr/bin/local-ai"]
+CMD ["local-ai", "--models-path", "/models"]
