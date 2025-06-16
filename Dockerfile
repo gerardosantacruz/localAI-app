@@ -1,13 +1,10 @@
-FROM quay.io/go-skynet/local-ai:latest
+FROM quay.io/go-skynet/local-ai:main-cpu-only
 
-# Directorio de modelos montado por volumen
+# Establecer la ruta donde irán los modelos
 ENV MODELS_PATH=/models
 
-# Activamos soporte para funciones (Tools)
-ENV ENABLE_FUNCTIONS_TOOL=true
-
-# Puerto de escucha (cambia si necesitás otro)
-EXPOSE 8080
+# Copiar tu configuración de modelo (sin descargar el modelo real)
+COPY models/ /models/
 
 # Comando de arranque
 CMD ["/usr/bin/local-ai"]
