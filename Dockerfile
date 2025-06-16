@@ -1,23 +1,13 @@
-FROM debian:bullseye-slim
+FROM quay.io/go-skynet/local-ai:latest
 
-# Instalar dependencias mínimas
-RUN apt-get update && apt-get install -y curl unzip && \
-    rm -rf /var/lib/apt/lists/*
-
-# Crear carpeta para modelos
-RUN mkdir -p /models
-
-# Descargar el binario de LocalAI (solo binario, no modelos)
-RUN curl -L https://github.com/go-skynet/LocalAI/releases/latest/download/local-ai-linux-amd64 \
-    -o /usr/local/bin/local-ai && chmod +x /usr/local/bin/local-ai
-
-# Variables necesarias
+# Directorio de modelos montado por volumen
 ENV MODELS_PATH=/models
-ENV THREADS=4
-ENV CONTEXT_SIZE=2048
 
-# Agregamos configuración del modelo
-COPY mistral.yaml /models/
+# Activamos soporte para funciones (Tools)
+ENV ENABLE_FUNCTIONS_TOOL=true
 
-# Ejecutar
-CMD ["/usr/local/bin/local-ai"]
+# Puerto de escucha (cambia si necesitás otro)
+EXPOSE 8080
+
+# Comando de arranque
+CMD ["/usr/bin/local-ai"]
